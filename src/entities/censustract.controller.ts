@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CensusTractService } from './censustract.service';
 import { CensusTract } from './censustract.entity';
 
@@ -11,5 +11,10 @@ export class CensusTractController {
   @Get('all')
   getHello(): Promise<CensusTract[]> {
     return this.censusTractService.getCensusTract();
+  }
+
+  @Post('within-boundary')
+  async findWithinBoundary(@Body('boundary') boundary: any): Promise<CensusTract[]> | null {
+    return this.censusTractService.findWithinBoundary(boundary);
   }
 }
