@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common'
+// import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CensusTractModule } from './entities/censustract.module';
+import { CensusTractModule } from './router/censustract/censustract.module';
 // import { CensusTractService } from './entities/censustract.service';
 
 @Module({
@@ -10,3 +11,9 @@ import { CensusTractModule } from './entities/censustract.module';
   providers: [AppService],
 })
 export class AppModule { }
+
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer.apply(CorsMiddleware).forRoutes('*')
+//   }
+// }

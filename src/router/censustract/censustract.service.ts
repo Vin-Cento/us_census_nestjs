@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CensusTract } from './censustract.entity';
+import { CensusTract } from '../../database/entities/censustract.entity'
 
 @Injectable()
 export class CensusTractService {
@@ -29,7 +29,6 @@ export class CensusTractService {
       wkt += '),'
     })
     wkt = wkt.slice(0, -1) + ')'
-
     return this.censustractRepository
       .createQueryBuilder('censustract')
       .where('ST_Within(censustract.geometry, ST_GeomFromEWKT(:wkt))', { wkt })

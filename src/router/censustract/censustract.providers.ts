@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { CensusTract } from './censustract.entity';
+import { CensusTract } from '../../database/entities/censustract.entity'
 
 export const censustractProvider = [
   {

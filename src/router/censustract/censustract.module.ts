@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../database.module';
+import { DatabaseModule } from '../../database/database.module';
 import { censustractProvider } from './censustract.providers';
 import { CensusTractService } from './censustract.service';
 import { CensusTractController } from './censustract.controller'

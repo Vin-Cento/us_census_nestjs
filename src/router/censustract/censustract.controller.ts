@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CensusTractService } from './censustract.service';
-import { CensusTract } from './censustract.entity';
+import { CensusTract } from '../../database/entities/censustract.entity';
 
 @Controller("tracts")
 export class CensusTractController {
