@@ -29,9 +29,6 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
-      terraformer-wkt-parser:
-        specifier: ^1.2.1
-        version: 1.2.1
       typeorm:
         specifier: ^0.3.20
         version: 0.3.20(pg@8.12.0)(ts-node@10.9.2(@types/node@20.16.3)(typescript@5.5.4))
@@ -587,9 +584,6 @@ packages:
 
   '@types/express@4.17.21':
     resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
-
-  '@types/geojson@1.0.6':
-    resolution: {integrity: sha512-Xqg/lIZMrUd0VRmSRbCAewtwGZiAk3mEUDvV4op1tGl+LvyPcb/MIOSxTl9z+9+J+R4/vpjiCAT4xeKzH9ji1w==}
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
@@ -2601,16 +2595,6 @@ packages:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
 
-  terraformer-wkt-parser@1.2.1:
-    resolution: {integrity: sha512-+CJyNLWb3lJ9RsZMTM66BY0MT3yIo4l4l22Jd9CrZuwzk54fsu4Sc7zejuS9fCITTuTQy3p06d4MZMVI7v5wSg==}
-    engines: {node: '>=4.2.6'}
-    deprecated: terraformer-wkt-parser is deprecated and no longer supported. Please use @terraformer/wkt.
-
-  terraformer@1.0.12:
-    resolution: {integrity: sha512-MokUp0+MFal4CmJDVL6VAO1bKegeXcBM2RnPVfqcFIp2IIv8EbPAjG0j/vEy/vuKB8NVMMSF2vfpVS/QLe4DBg==}
-    engines: {node: '>=4.2.6'}
-    deprecated: terraformer is deprecated and no longer supported. Please use @terraformer/arcgis.
-
   terser-webpack-plugin@5.3.10:
     resolution: {integrity: sha512-BKFPWlPDndPs+NGGCr1U59t0XScL5317Y0UReNrHaw9/FwhPENlq6bfgs+4yPfyP51vqC1bQ4rp1EfXW5ZSH9w==}
     engines: {node: '>= 10.13.0'}
@@ -3654,8 +3638,6 @@ snapshots:
       '@types/express-serve-static-core': 4.19.5
       '@types/qs': 6.9.15
       '@types/serve-static': 1.15.7
-
-  '@types/geojson@1.0.6': {}
 
   '@types/graceful-fs@4.1.9':
     dependencies:
@@ -5931,15 +5913,6 @@ snapshots:
       tslib: 2.7.0
 
   tapable@2.2.1: {}
-
-  terraformer-wkt-parser@1.2.1:
-    dependencies:
-      '@types/geojson': 1.0.6
-      terraformer: 1.0.12
-
-  terraformer@1.0.12:
-    optionalDependencies:
-      '@types/geojson': 1.0.6
 
   terser-webpack-plugin@5.3.10(webpack@5.94.0):
     dependencies:

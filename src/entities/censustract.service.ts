@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { CensusTract } from './censustract.entity';
-import WKT from 'terraformer-wkt-parser';
 
 @Injectable()
 export class CensusTractService {
@@ -16,12 +15,21 @@ export class CensusTractService {
   }
 
   async findWithinBoundary(boundaryGeoJSON: any): Promise<CensusTract[]> | null {
-    const boundary = JSON.stringify(boundaryGeoJSON);
-    console.log('boundary', boundary)
+    let wkt = 'SRID=4269;MULTIPOLYGON('
+    boundaryGeoJSON.features.forEach((feature: any) => {
+      wkt += '('
+      feature.geometry.coordinates.forEach((coordinate: any) => {
+        wkt += '('
+        coordinate.forEach((c: number[]) => {
+          let str = `${c[0]} ${c[1]},`
+          wkt += str
+        })
+        wkt = wkt.slice(0, -1) + ')'
+      })
+      wkt += '),'
+    })
+    wkt = wkt.slice(0, -1) + ')'
 
-    let wkt = 'SRID=4269;MULTIPOLYGON ('
-    boundaryGeoJSON.features.forEach((feature: any) => { wkt += WKT.convert(feature.geometry).replace('POLYGON', '') });
-    wkt = wkt + ')'
     return this.censustractRepository
       .createQueryBuilder('censustract')
       .where('ST_Within(censustract.geometry, ST_GeomFromEWKT(:wkt))', { wkt })
