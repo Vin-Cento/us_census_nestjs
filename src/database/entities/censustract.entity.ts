@@ -5,6 +5,9 @@ export class CensusTract {
   @PrimaryColumn('integer')
   id: number;
 
+  @Column('text', { nullable: true })
+  county: string;
+
   @Column('text')
   censuscode: string;
 
