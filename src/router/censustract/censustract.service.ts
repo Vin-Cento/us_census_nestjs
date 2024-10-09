@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CensusTract } from '../../database/entities/censustract.entity'
+import { CensusTract } from '../../database/entities/censustract.entity';
 
 @Injectable()
 export class CensusTractService {
@@ -10,25 +10,27 @@ export class CensusTractService {
   ) { }
 
   async getCensusTract(): Promise<CensusTract[]> {
-    let censusData = this.censustractRepository.find({ take: 1 });
-    return censusData
+    const censusData = this.censustractRepository.find({ take: 1 });
+    return censusData;
   }
 
-  async findWithinBoundary(boundaryGeoJSON: any): Promise<CensusTract[]> | null {
-    let wkt = 'SRID=4269;MULTIPOLYGON('
+  async findWithinBoundary(
+    boundaryGeoJSON: any,
+  ): Promise<CensusTract[]> | null {
+    let wkt = 'SRID=4269;MULTIPOLYGON(';
     boundaryGeoJSON.features.forEach((feature: any) => {
-      wkt += '('
+      wkt += '(';
       feature.geometry.coordinates.forEach((coordinate: any) => {
-        wkt += '('
+        wkt += '(';
         coordinate.forEach((c: number[]) => {
-          let str = `${c[0]} ${c[1]},`
-          wkt += str
-        })
-        wkt = wkt.slice(0, -1) + ')'
-      })
-      wkt += '),'
-    })
-    wkt = wkt.slice(0, -1) + ')'
+          const str = `${c[0]} ${c[1]},`;
+          wkt += str;
+        });
+        wkt = wkt.slice(0, -1) + ')';
+      });
+      wkt += '),';
+    });
+    wkt = wkt.slice(0, -1) + ')';
     return this.censustractRepository
       .createQueryBuilder('censustract')
       .where('ST_Within(censustract.geometry, ST_GeomFromEWKT(:wkt))', { wkt })
