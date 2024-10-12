@@ -13,7 +13,7 @@ export const censustractProvider = [
 
 export const income1901Provider = [
   {
-    provide: 'CENSUSTRACT_REPOSITORY',
+    provide: 'INCOME_REPOSITORY',
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(Income1901),
     inject: ['POSTGRES'],

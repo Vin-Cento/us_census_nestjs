@@ -1,8 +1,16 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+  JoinTable,
+} from 'typeorm';
+import { Income1901 } from './income1901.entity';
 
 @Entity({ name: 'censustract' })
 export class CensusTract {
-  @PrimaryColumn('integer')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column('text', { nullable: true })
@@ -43,4 +51,8 @@ export class CensusTract {
 
   @Column('geometry', { spatialFeatureType: 'MultiPolygon', srid: 4269 })
   geometry: string;
+
+  @OneToOne(() => Income1901, (income1901) => income1901.censustract)
+  @JoinColumn()
+  income1901: Income1901;
 }

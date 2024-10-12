@@ -7,7 +7,7 @@ export class CensusTractController {
   constructor(private readonly censusTractService: CensusTractService) {}
 
   @Get('all')
-  getHello(): Promise<CensusTract[]> {
+  getAll(): Promise<CensusTract[]> {
     return this.censusTractService.getCensusTract();
   }
 
@@ -16,5 +16,10 @@ export class CensusTractController {
     @Body('boundary') boundary: any,
   ): Promise<CensusTract[]> | null {
     return this.censusTractService.findWithinBoundary(boundary);
+  }
+
+  @Post('income')
+  async findIncome(@Body('boundary') boundary: any): Promise<any[]> | null {
+    return this.censusTractService.findIncome(boundary);
   }
 }

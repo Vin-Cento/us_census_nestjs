@@ -17,7 +17,7 @@ export const databaseProviders = [
         entities: [
           // './*.entity{.ts,.js}',
           // './entities/*.entity{.ts,.js}',
-          __dirname + '/**/*.entity{.ts,.js}'
+          __dirname + '/**/*.entity{.ts,.js}',
         ],
         synchronize: true,
       });
