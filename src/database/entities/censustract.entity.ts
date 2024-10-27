@@ -4,14 +4,17 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
-  JoinTable,
 } from 'typeorm';
-import { Income1901 } from './income1901.entity';
+import { Income } from './income.entity';
+import { Rent } from './rent.entity';
 
 @Entity({ name: 'censustract' })
 export class CensusTract {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column('int', { nullable: true })
+  year: number;
 
   @Column('text', { nullable: true })
   county: string;
@@ -52,7 +55,11 @@ export class CensusTract {
   @Column('geometry', { spatialFeatureType: 'MultiPolygon', srid: 4269 })
   geometry: string;
 
-  @OneToOne(() => Income1901, (income1901) => income1901.censustract)
+  @OneToOne(() => Income, (income) => income.censustract)
   @JoinColumn()
-  income1901: Income1901;
+  income: Income;
+
+  @OneToOne(() => Rent, (rent) => rent.censustract)
+  @JoinColumn()
+  rent: Rent;
 }

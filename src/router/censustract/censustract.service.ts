@@ -7,7 +7,7 @@ export class CensusTractService {
   constructor(
     @Inject('CENSUSTRACT_REPOSITORY')
     private censustractRepository: Repository<CensusTract>,
-  ) {}
+  ) { }
 
   async getCensusTract(): Promise<CensusTract[]> {
     const censusData = this.censustractRepository.find({ take: 1 });
@@ -24,14 +24,44 @@ export class CensusTractService {
       .getMany();
   }
 
+  async findModeIncome(boundaryGeoJSON: any): Promise<any[]> | null {
+    const wkt = this.processGeojson(boundaryGeoJSON);
+    const data = await this.censustractRepository
+      .createQueryBuilder('censustract')
+      .leftJoinAndSelect('censustract.income', 'income')
+      .where('ST_Within(censustract.geometry, ST_GeomFromEWKT(:wkt))', { wkt })
+      .getMany();
+
+    return data;
+  }
+
   async findIncome(boundaryGeoJSON: any): Promise<any[]> | null {
     const wkt = this.processGeojson(boundaryGeoJSON);
     const data = await this.censustractRepository
       .createQueryBuilder('censustract')
-      .leftJoinAndSelect('censustract.income1901', 'income1901')
-      .where('ST_Within(censustract.geometry, ST_GeomFromEWKT(:wkt))', { wkt })
+      .leftJoinAndSelect('censustract.income', 'income')
+      .where('ST_Intersects(censustract.geometry, ST_GeomFromEWKT(:wkt))', {
+        wkt,
+      })
       .getMany();
 
+    return data;
+  }
+
+  async listCounty(searchQuery: string): Promise<any[]> | null {
+    const data = this.censustractRepository
+      .createQueryBuilder('censustract')
+      .select('censustract.county')
+      .addSelect('censustract.state')
+      .distinctOn(['censustract.county', 'censustract.state'])
+      .where(
+        "LOWER(censustract.county) || ' ' || LOWER(censustract.state) LIKE :county ",
+        {
+          county: `%${searchQuery.toLowerCase()}%`,
+        },
+      )
+      .limit(5)
+      .getMany();
     return data;
   }
 

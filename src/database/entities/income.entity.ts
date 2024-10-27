@@ -1,22 +1,13 @@
 import { Entity, Column, PrimaryColumn, OneToOne } from 'typeorm';
 import { CensusTract } from './censustract.entity';
 
-@Entity({ name: 'income1901' })
-export class Income1901 {
+@Entity({ name: 'income' })
+export class Income {
   @PrimaryColumn('integer')
   id: number;
 
   @Column('text', { nullable: true })
   GEO_ID: string;
-
-  @Column('text', { nullable: true })
-  mean: string;
-
-  @Column('text', { nullable: true })
-  mode: string;
-
-  @Column('text', { nullable: true })
-  median: string;
 
   @Column('integer', { nullable: true })
   B19001_001E: number;
@@ -120,6 +111,12 @@ export class Income1901 {
   @Column('integer', { nullable: true })
   B19001_017M: number;
 
-  @OneToOne(() => CensusTract, (censustract) => censustract.income1901)
+  @Column('money', { nullable: true })
+  B19301_001E: number;
+
+  @Column('money', { nullable: true })
+  B19301_001M: number;
+
+  @OneToOne(() => CensusTract, (censustract) => censustract.income)
   censustract: CensusTract;
 }
