@@ -7,7 +7,7 @@ export class CensusTractService {
   constructor(
     @Inject('CENSUSTRACT_REPOSITORY')
     private censustractRepository: Repository<CensusTract>,
-  ) { }
+  ) {}
 
   async getCensusTract(): Promise<CensusTract[]> {
     const censusData = this.censustractRepository.find({ take: 1 });
@@ -18,21 +18,11 @@ export class CensusTractService {
     boundaryGeoJSON: any,
   ): Promise<CensusTract[]> | null {
     const wkt = this.processGeojson(boundaryGeoJSON);
-    return this.censustractRepository
+    const data = this.censustractRepository
       .createQueryBuilder('censustract')
       .where('ST_Within(censustract.geometry, ST_GeomFromEWKT(:wkt))', { wkt })
       .getMany();
-  }
-
-  async findModeIncome(boundaryGeoJSON: any): Promise<any[]> | null {
-    const wkt = this.processGeojson(boundaryGeoJSON);
-    const data = await this.censustractRepository
-      .createQueryBuilder('censustract')
-      .leftJoinAndSelect('censustract.income', 'income')
-      .where('ST_Within(censustract.geometry, ST_GeomFromEWKT(:wkt))', { wkt })
-      .getMany();
-
-    return data;
+    return data
   }
 
   async findIncome(boundaryGeoJSON: any): Promise<any[]> | null {
@@ -40,6 +30,7 @@ export class CensusTractService {
     const data = await this.censustractRepository
       .createQueryBuilder('censustract')
       .leftJoinAndSelect('censustract.income', 'income')
+      .leftJoinAndSelect('censustract.rent', 'rent')
       .where('ST_Intersects(censustract.geometry, ST_GeomFromEWKT(:wkt))', {
         wkt,
       })
@@ -48,20 +39,16 @@ export class CensusTractService {
     return data;
   }
 
-  async listCounty(searchQuery: string): Promise<any[]> | null {
-    const data = this.censustractRepository
+  async findRent(boundaryGeoJSON: any): Promise<any[]> | null {
+    const wkt = this.processGeojson(boundaryGeoJSON);
+    const data = await this.censustractRepository
       .createQueryBuilder('censustract')
-      .select('censustract.county')
-      .addSelect('censustract.state')
-      .distinctOn(['censustract.county', 'censustract.state'])
-      .where(
-        "LOWER(censustract.county) || ' ' || LOWER(censustract.state) LIKE :county ",
-        {
-          county: `%${searchQuery.toLowerCase()}%`,
-        },
-      )
-      .limit(5)
+      .leftJoinAndSelect('censustract.rent', 'rent')
+      .where('ST_Intersects(censustract.geometry, ST_GeomFromEWKT(:wkt))', {
+        wkt,
+      })
       .getMany();
+
     return data;
   }
 

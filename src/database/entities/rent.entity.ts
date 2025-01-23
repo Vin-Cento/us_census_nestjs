@@ -245,7 +245,7 @@ export class Rent {
   @Column('integer', { nullable: true })
   B25061_025M: number;
 
-  @OneToOne(() => CensusTract, (censustract) => censustract.rent)
-  @JoinColumn()
-  censustract: CensusTract;
+  // @OneToOne(() => CensusTract, (censustract) => censustract.rent)
+  // @JoinColumn()
+  // censustract: CensusTract;
 }

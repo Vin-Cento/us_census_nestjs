@@ -3,14 +3,13 @@ import { Repository } from 'typeorm';
 import { City } from 'src/database/entities/city.entity';
 
 @Injectable()
-export class CityService {
+export class LocationService {
   constructor(
     @Inject('CITY_REPOSITORY')
     private cityRepository: Repository<City>,
   ) { }
 
   async listCity(searchQuery: string): Promise<any[]> | null {
-    console.log('in listCity');
     const data = await this.cityRepository
       .createQueryBuilder('city')
       .select('city.city_ascii')

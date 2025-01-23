@@ -117,6 +117,6 @@ export class Income {
   @Column('money', { nullable: true })
   B19301_001M: number;
 
-  @OneToOne(() => CensusTract, (censustract) => censustract.income)
-  censustract: CensusTract;
+  // @OneToOne(() => CensusTract, (censustract) => censustract.income)
+  // censustract: CensusTract;
 }

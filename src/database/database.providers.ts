@@ -1,4 +1,6 @@
 import { DataSource } from 'typeorm';
+import { City } from 'src/database/entities/city.entity';
+import { CensusBlockGroup } from './entities/censusblockgroup.entity';
 
 export const databaseProviders = [
   {
@@ -24,5 +26,22 @@ export const databaseProviders = [
 
       return dataSource.initialize();
     },
+  },
+];
+
+export const censusblockgroupProvider = [
+  {
+    provide: 'CENSUSBLOCKGROUP_REPOSITORY',
+    useFactory: (dataSource: DataSource) =>
+      dataSource.getRepository(CensusBlockGroup),
+    inject: ['POSTGRES'],
+  },
+];
+
+export const cityProvider = [
+  {
+    provide: 'CITY_REPOSITORY',
+    useFactory: (dataSource: DataSource) => dataSource.getRepository(City),
+    inject: ['POSTGRES'],
   },
 ];
