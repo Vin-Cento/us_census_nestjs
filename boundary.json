@@ -1,5 +1,5 @@
 {
-  "boundary": {
+  "shape": {
     "type": "FeatureCollection",
     "features": [
       {
@@ -104,5 +104,6 @@
         }
       }
     ]
-  }
+  },
+  "year": "2021"
 }

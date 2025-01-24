@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { CensusBlockGroup } from 'src/database/entities/censusblockgroup.entity';
+import { BoundaryDto } from 'src/common/BoundaryDto';
 
 @Injectable()
 export class CensusBlockGroupService {
@@ -15,47 +16,48 @@ export class CensusBlockGroupService {
   }
 
   async getWithinBoundary(
-    boundaryGeoJSON: any,
+    boundary: BoundaryDto,
   ): Promise<CensusBlockGroup[]> | null {
-    const wkt = this.processGeojson(boundaryGeoJSON);
+    const wkt = this.geojson2wkt(boundary.shape);
     const data = this.censusblockgroupRepository
       .createQueryBuilder('block')
       .addSelect('block.geometry')
       .where('ST_Within(block.geometry, ST_GeomFromEWKT(:wkt))', { wkt })
+      .andWhere('block.year = :year', { year: boundary.year })
       .getMany();
     return data
   }
 
-  async getIncomePerCapita(boundaryGeoJSON: any): Promise<any[]> | null {
-    const wkt = this.processGeojson(boundaryGeoJSON);
+  async getIncomePerCapita(boundary: any): Promise<any[]> | null {
+    const wkt = this.geojson2wkt(boundary.shape);
     const data = await this.censusblockgroupRepository
       .createQueryBuilder('block')
       .leftJoinAndSelect('block.incomepercapita', 'incomepercapita')
       .where('ST_Intersects(block.geometry, ST_GeomFromEWKT(:wkt))', {
         wkt,
       })
-      .andWhere('block.year = :year', { year: 2022 })
+      .andWhere('block.year = :year', { year: boundary.year })
       .getMany();
 
     return data;
   }
 
-  async getSexByAge(boundaryGeoJSON: any): Promise<any[]> | null {
-    const wkt = this.processGeojson(boundaryGeoJSON);
+  async getSexByAge(boundary: any): Promise<any[]> | null {
+    const wkt = this.geojson2wkt(boundary.shape);
     const data = await this.censusblockgroupRepository
       .createQueryBuilder('block')
       .leftJoinAndSelect('block.sexbyage', 'sex_by_age')
       .where('ST_Intersects(block.geometry, ST_GeomFromEWKT(:wkt))', {
         wkt,
       })
-      .andWhere('block.year = :year', { year: 2022 })
+      .andWhere('block.year = :year', { year: boundary.year })
       .getMany();
 
 
     return data;
   }
 
-  processGeojson(boundaryGeoJSON: any): string {
+  geojson2wkt(boundaryGeoJSON: any): string {
     let wkt = 'SRID=4269;MULTIPOLYGON(';
     boundaryGeoJSON.features.forEach((feature: any) => {
       wkt += '(';
